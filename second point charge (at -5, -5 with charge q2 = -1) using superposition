@@ -1,0 +1,39 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+k=8.99e9
+q1=1
+q2=-1
+N=20
+x = np.linspace(-10.0,10.0,N)+1e-6 # so as not to have point at zero
+y = np.linspace(-10,10.0,N)+1e-6
+X,Y = np.meshgrid(x,y)
+
+# now find field
+
+# field from charge 1 at (6, 7)
+thE1 = np.arctan2(Y-7,X-6)
+magE1 = k*q1/((X-6)**2.+(Y-7)**2.)
+Ex1 = magE1*np.cos(thE1)
+Ey1 = magE1*np.sin(thE1)
+
+# field from charge 2 at (-5, -5)
+thE2 = np.arctan2(Y+5,X+5)
+magE2 = k*q2/((X+5)**2.+(Y+5)**2.)
+Ex2 = magE2*np.cos(thE2)
+Ey2 = magE2*np.sin(thE2)
+
+# total field superposition
+Ex = Ex1 + Ex2
+Ey = Ey1 + Ey2
+magE = np.sqrt(Ex**2.+Ey**2.)
+
+mask = magE > 40 # filter magnitude
+
+# quiver plot
+fig, ax = plt.subplots()
+q = ax.quiver(X[mask],Y[mask],Ex[mask],Ey[mask])
+ax.set_aspect('equal')
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+plt.show()
