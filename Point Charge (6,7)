@@ -1,0 +1,24 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+k=8.99e9
+q=1
+N=20
+x = np.linspace(-6.0,7.0,N)+1e-6 # so as not to have point at zero
+y = np.linspace(-6.0,7.0,N)+1e-6
+X,Y = np.meshgrid(x,y)
+
+# now find field
+thE = np.arctan2(Y - 7, X - 6)
+magE = k*q/((X - 6)**2. + (Y - 7)**2.)
+mask = magE > 40 # will have big values near origin
+Ex = magE*np.cos(thE)
+Ey = magE*np.sin(thE)
+
+# quiver plot
+fig, ax = plt.subplots()
+q_plot = ax.quiver(X[mask],Y[mask],Ex[mask],Ey[mask]) 
+ax.set_aspect('equal')
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+plt.show()
